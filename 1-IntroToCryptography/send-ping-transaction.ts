@@ -1,8 +1,7 @@
 import * as web3 from "@solana/web3.js";
 import "dotenv/config";
 import {
-    getKeypairFromEnvironment,
-    airdropIfRequired,
+    getKeypairFromEnvironment
 } from "@solana-developers/helpers";
 
 const payer = getKeypairFromEnvironment("SECRET_KEY");
@@ -27,13 +26,6 @@ const instruction = new web3.TransactionInstruction({
     programId,
 });
 
-const newBalance = await airdropIfRequired(
-    connection,
-    payer.publicKey,
-    1 * web3.LAMPORTS_PER_SOL,
-    0.5 * web3.LAMPORTS_PER_SOL,
-);
-
 transaction.add(instruction);
 
 const signature = await web3.sendAndConfirmTransaction(
@@ -46,4 +38,3 @@ console.log(`✅ Transaction completed! Signature is ${signature}`);
 console.log(
     `You can view your transaction on Solana Explorer at:\nhttps://explorer.solana.com/tx/${signature}?cluster=devnet`,
 );
-console.log(`Payer's new balance is: ${newBalance / web3.LAMPORTS_PER_SOL} SOL`);
